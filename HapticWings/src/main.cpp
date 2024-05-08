@@ -24,8 +24,8 @@ bool isInitializtion = false;   // 是否初始化
 
 int switchState = 1;
 int circle = 3; // 旋转圈数
-bool shouldMove = false;
-bool servoMoved = true;
+bool allowMove = false;
+bool shouldServoMove = true;
 int i = 1000;
 
 void setup()
@@ -37,13 +37,16 @@ void setup()
   /*当前似乎1200和350已经是极限了，但该模型使用的导轨和滑块比较陈旧，
   因此实际上会更高一些*/
 
-  stepperLeft.setCurrentPosition(0); // 设置当前位置为0
-  stepperLeft.setMaxSpeed(1200);     // 设置最大速度
-  stepperLeft.setAcceleration(350);  // 设置加速度
+  // stepperLeft.setCurrentPosition(0); // 设置当前位置为0
+  // stepperLeft.setMaxSpeed(1200);     // 设置最大速度
+  // stepperLeft.setAcceleration(350);  // 设置加速度
 
-  stepperRight.setCurrentPosition(0);
-  stepperRight.setMaxSpeed(1200);
-  stepperRight.setAcceleration(350);
+  // stepperRight.setCurrentPosition(0);
+  // stepperRight.setMaxSpeed(1200);
+  // stepperRight.setAcceleration(350);
+  
+  stepperLeft.setCurrentPosition(0); // 设置当前位置为0
+  stepperLeft.setMaxSpeed(2000);     // 设置最大速度
   i = 0;
 }
 
@@ -52,31 +55,39 @@ void loop()
   switchState = digitalRead(switchPin); // 读取开关状态
 
   long *Command = SerialReceive();
-  
+
   if (Command[0] == 0)
   {
-    Serial.println("Target position set to: " + String(Command[1]));
+    Serial.println("Servo angle: " + String(Command[1]) + " Time: " + String(Command[2]));
+    Serial.println("Stepper distance: " + String(Command[3]) + " IsAcceleration: " + String(Command[4]));
+    Serial.println("TestMode: " + String(Command[5]));
   }
 
   if (switchState == LOW)
   {
-    // Serial.println("Switch is ON");
-    shouldMove = true;
-    // stepperLeft.moveTo(-700); // 按圈数移动指定的步数
-    //  stepperRight.moveTo(700);
-    servoMoved = false;
+    //  Serial.println("Switch is ON");
+    allowMove = true;
+    
+    //stepperLeft.moveTo(Command[3]); // 按圈数移动指定的步数
+
+    stepperLeft.moveTo(700);
+    stepperLeft.setSpeed(1000);
+
+    shouldServoMove = true;
   }
 
-  if (shouldMove)
+  if (allowMove)
   {
-    stepperLeft.run(); // 不断调用run()来实际移动电机
+    //stepperLeft.run(); // 不断调用run()来实际移动电机
+
+    stepperLeft.runSpeedToPosition();
     // stepperRight.run();
 
-    if (!servoMoved)
+    if (shouldServoMove)
     {
-      LobotSerialServoMove(Serial, ID_ALL, 500, 500);
+      LobotSerialServoMove(Serial, ID_ALL, Command[1], Command[2]);
       // LobotSerialServoMove(Serial, ID_ALL, 500, 500);
-      servoMoved = true;
+      shouldServoMove = false;
     }
   }
 
@@ -85,5 +96,5 @@ void loop()
     // Serial.println("Switch is OFF");
   }
 
-  // delay(500); // 简单的延时，防止信息打印过快
+  //delay(500); // 简单的延时，防止信息打印过快
 }

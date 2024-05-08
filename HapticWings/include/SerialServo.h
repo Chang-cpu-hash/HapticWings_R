@@ -66,6 +66,7 @@ int LobotSerialServoReceiveHandle(HardwareSerial &SerialX, byte *ret)
       }
     }
   }
+   return -999;
 }
 //写入舵机ID
 void LobotSerialServoSetID(HardwareSerial &SerialX, uint8_t oldID, uint8_t newID)
