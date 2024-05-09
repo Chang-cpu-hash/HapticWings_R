@@ -72,6 +72,7 @@ void loop()
   {
     printCommandInfo("RunMode: ", Command);
   }
+  
 
   if (Command[0] == 0 || Command[0] == 1)
   {
@@ -131,7 +132,7 @@ void loop()
   //   shouldServoMove = true;
   // }
 
-  Command[0] = 99;
+  //Command[0] = 99;
   // 补充逻辑，如果舵机和步进电机都到了目标位置，将allowMove置为false
   // delay(500); // 简单的延时，防止信息打印过快
 }
