@@ -92,8 +92,8 @@ void loop()
 
     if (shouldServoMove)
     {
-      LobotSerialServoMove(Serial, ID_ALL, Command[1], Command[2]);
-      // LobotSerialServoMove(Serial, ID_ALL, 500, 500);
+      //  LobotSerialServoMove(Serial, ID_ALL, Command[1], Command[2]);
+      LobotSerialServoMove(Serial, ID_ALL, 500, 500);
       shouldServoMove = false;
     }
   }

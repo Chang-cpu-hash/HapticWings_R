@@ -10,7 +10,8 @@
 
 String buff = "";
 
-const size_t capacity = JSON_OBJECT_SIZE(3) + 2*JSON_ARRAY_SIZE(2) + 4*JSON_OBJECT_SIZE(2); // 修改为适当的 JSON 容量，以适应舵机和步进电机的信息
+// const size_t capacity = JSON_OBJECT_SIZE(3) + 2*JSON_ARRAY_SIZE(2) + 4*JSON_OBJECT_SIZE(2); // 修改为适当的 JSON 容量，以适应舵机和步进电机的信息
+const size_t capacity = 1024;
 StaticJsonDocument<capacity> jb;
 
 long *SerialReceive()
