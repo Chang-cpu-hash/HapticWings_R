@@ -16,54 +16,58 @@ String buff = "";
 const size_t capacity = 1024;
 StaticJsonDocument<capacity> jb;
 
-long *SerialReceive()
+long *MySerialReceive()
 {
-  static long Command[9]; // 数组用于存储模式，两个舵机的角度和时间，以及两个步进电机的移动距离和加速度标志位
-  if (Serial.available())
+  static long Command[9];
+  if (mySerial.available())
   {
-    char inChar;
+    String buff;
+    char inChar = '\0'; // 初始化字符
     while (inChar != '\n')
     {
-      while (!Serial.available())
-        ;
-      inChar = (char)Serial.read();
+      while (!mySerial.available())
+        ; // 等待数据
+      inChar = (char)mySerial.read();
       if (inChar == '\n')
       {
-        Serial.println(buff);
+        mySerial.println(buff);
+        StaticJsonDocument<200> jb; // 调整大小根据实际需求
         DeserializationError err = deserializeJson(jb, buff);
         if (err)
         {
-          Serial.print(F("deserializeJson() failed: "));
-          Serial.println(err.c_str());
+          mySerial.print(F("deserializeJson() failed: "));
+          mySerial.println(err.c_str());
         }
 
-        // 解析模式
         String mode = jb["Mode"];
-        if (mode == "Init") {
+        if (mode == "Init")
+        {
           Command[0] = 0;
-        } else if (mode == "Run") {
+        }
+        else if (mode == "Run")
+        {
           Command[0] = 1;
         }
 
-        // 解析舵机的控制信息
         JsonArray servoDataArray = jb["Servos"];
-        for (int i = 0; i < 2; i++) {
+        for (int i = 0; i < 2; i++)
+        {
           JsonObject servoData = servoDataArray[i];
           if (!servoData.isNull())
           {
-            Command[1 + i*2] = servoData["Angle"];
-            Command[2 + i*2] = servoData["Time"];
+            Command[1 + i * 2] = servoData["Angle"];
+            Command[2 + i * 2] = servoData["Time"];
           }
         }
 
-        // 解析步进电机的控制信息
         JsonArray stepperDataArray = jb["Steppers"];
-        for (int i = 0; i < 2; i++) {
+        for (int i = 0; i < 2; i++)
+        {
           JsonObject stepperData = stepperDataArray[i];
           if (!stepperData.isNull())
           {
-            Command[5 + i*2] = stepperData["Distance"];
-            Command[6 + i*2] = stepperData["Acceleration"];
+            Command[5 + i * 2] = stepperData["Distance"];
+            Command[6 + i * 2] = stepperData["Acceleration"];
           }
         }
 

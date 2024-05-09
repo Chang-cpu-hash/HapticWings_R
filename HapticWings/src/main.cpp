@@ -3,6 +3,7 @@
 #include "SerialServo.h"
 #include "communication.hpp"
 #include "control.h"
+#include <SoftwareSerial.h>
 
 #define DIR_PIN_LEFT 2 // 定义步进和方向引脚
 #define STEP_PIN_LEFT 4
@@ -12,6 +13,10 @@
 
 #define NUMBER_OF_CIRCURES 200
 
+int rxPin = 10;
+int txPin = 11;
+
+SoftwareSerial mySerial(rxPin, txPin); // RX, TX
 /*以电机输出轴对人脸方向，
 步进电机顺时针为正，
 舵机顺时针为正*/
@@ -38,6 +43,7 @@ void setup()
 {
   pinMode(switchPin, INPUT_PULLUP); // 设置数字口为输入模式，启用内部上拉电阻
   Serial.begin(115200);             // 初始化串口通信
+  mySerial.begin(115200);             // 初始化串口通信
   stepperLeft.stop();
   stepperRight.stop();
 
@@ -61,7 +67,7 @@ void loop()
 {
   // switchState = digitalRead(switchPin); // 读取开关状态
 
-  long *Command = SerialReceive();
+  long *Command = MySerialReceive();
 
   // 用于测试communication.hpp中的SerialReceive()函数是否正常工作
   if (Command[0] == 0)
