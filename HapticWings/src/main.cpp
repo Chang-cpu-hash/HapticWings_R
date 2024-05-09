@@ -43,7 +43,7 @@ void setup()
 {
   pinMode(switchPin, INPUT_PULLUP); // 设置数字口为输入模式，启用内部上拉电阻
   Serial.begin(115200);             // 初始化串口通信
-  mySerial.begin(115200);             // 初始化串口通信
+  mySerial.begin(19200);             // 初始化串口通信
   stepperLeft.stop();
   stepperRight.stop();
 
