@@ -13,10 +13,9 @@
 
 #define NUMBER_OF_CIRCURES 200
 
-int rxPin = 10;
-int txPin = 11;
+int rxPin = 15;
+int txPin = 14;
 
-SoftwareSerial mySerial(rxPin, txPin); // RX, TX
 /*以电机输出轴对人脸方向，
 步进电机顺时针为正，
 舵机顺时针为正*/
@@ -43,7 +42,8 @@ void setup()
 {
   pinMode(switchPin, INPUT_PULLUP); // 设置数字口为输入模式，启用内部上拉电阻
   Serial.begin(115200);             // 初始化串口通信
-  mySerial.begin(19200);             // 初始化串口通信
+  //mySerial.begin(19200);             // 初始化串口通信
+  Serial1.begin(115200);
   stepperLeft.stop();
   stepperRight.stop();
 
@@ -110,7 +110,7 @@ void loop()
 
     if (shouldServoMove1)
     {
-      LobotSerialServoMove(Serial, ID_ALL, Command[1], Command[2]);
+      LobotSerialServoMove(Serial1, ID_ALL, Command[1], Command[2]);
       Serial.println("Send suscessful");
       shouldServoMove1 = false;
     }
