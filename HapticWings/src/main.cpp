@@ -1,9 +1,9 @@
 #include <AccelStepper.h>
 #include "include.h"
 #include "SerialServo.h"
-#include "communication.hpp"
+#include <communication.hpp>
 #include "control.h"
-#include <SoftwareSerial.h>
+//#include <SoftwareSerial.h>
 
 #define DIR_PIN_LEFT 2 // 定义步进和方向引脚
 #define STEP_PIN_LEFT 4
@@ -67,7 +67,7 @@ void loop()
 {
   // switchState = digitalRead(switchPin); // 读取开关状态
 
-  long *Command = MySerialReceive();
+  long *Command = SerialReceive();
 
   // 用于测试communication.hpp中的SerialReceive()函数是否正常工作
   if (Command[0] == 0)
@@ -111,6 +111,7 @@ void loop()
     if (shouldServoMove1)
     {
       LobotSerialServoMove(Serial, ID_ALL, Command[1], Command[2]);
+      Serial.println("Send suscessful");
       shouldServoMove1 = false;
     }
 

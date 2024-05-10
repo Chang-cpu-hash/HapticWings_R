@@ -78,7 +78,7 @@ void LobotSerialServoSetID(HardwareSerial &SerialX, uint8_t oldID, uint8_t newID
   buf[4] = LOBOT_SERVO_ID_WRITE;
   buf[5] = newID;
   buf[6] = LobotCheckSum(buf);
-  SerialX.write(buf, 7);
+  SerialX.write(buf, 7); 
 }
 
 //控制舵机转动
