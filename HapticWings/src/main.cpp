@@ -43,7 +43,7 @@ void setup()
   pinMode(switchPin, INPUT_PULLUP); // 设置数字口为输入模式，启用内部上拉电阻
   Serial.begin(115200);             // 初始化串口通信
   //mySerial.begin(19200);             // 初始化串口通信
-  Serial1.begin(115200);
+  Serial3.begin(115200);
   stepperLeft.stop();
   stepperRight.stop();
 
@@ -65,18 +65,18 @@ void setup()
 
 void loop()
 {
-  // switchState = digitalRead(switchPin); // 读取开关状态
+   switchState = digitalRead(switchPin); // 读取开关状态
 
   long *Command = SerialReceive();
 
   // 用于测试communication.hpp中的SerialReceive()函数是否正常工作
   if (Command[0] == 0)
   {
-    printCommandInfo("TestMode: Init", Command);
+    //printCommandInfo("TestMode: Init", Command);
   }
   else if (Command[0] == 1)
   {
-    printCommandInfo("RunMode: ", Command);
+    //printCommandInfo("RunMode: ", Command);
   }
   
 
@@ -101,6 +101,11 @@ void loop()
     }
   }
 
+  if(!switchState){
+    allowMove = true;
+    shouldServoMove1 = true;
+  }
+
   if (allowMove)
   {
     if (stepperLeft.runSpeedToPosition())
@@ -110,7 +115,7 @@ void loop()
 
     if (shouldServoMove1)
     {
-      LobotSerialServoMove(Serial1, ID_ALL, Command[1], Command[2]);
+      LobotSerialServoMove(Serial3, ID_ALL, Command[1], Command[2]);
       Serial.println("Send suscessful");
       shouldServoMove1 = false;
     }
