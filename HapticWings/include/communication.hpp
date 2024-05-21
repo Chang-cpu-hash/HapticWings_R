@@ -5,9 +5,9 @@
 // 第一个mode用于判断是否是归位还是要运行，0为归位，1为运行；
 // 第二个第三个用于判断舵机的角度和运行所需的时间，这里假设我们使用的串行舵机
 // 第四个第五个用于判断步进电机的移动距离和是否需要加速
-// Example 到最远端1 {"Mode": "Run", "Servos": [{"Angle": 1000, "Time": 1000}, {"Angle": 1000, "Time": 1000}], "Steppers": [{"Distance": 700, "Acceleration": false}, {"Distance": -700, "Acceleration": false}]}
-// 到最远端口2 {"Mode": "Run", "Servos": [{"Angle": 0, "Time": 1000}, {"Angle": 0, "Time": 1000}], "Steppers": [{"Distance": 700, "Acceleration": false}, {"Distance": -700, "Acceleration": false}]}
-// 初始化 {"Mode": "Init", "Servos": [{"Angle": 500, "Time": 1000}, {"Angle": 500, "Time": 1000}], "Steppers": [{"Distance": 0, "Acceleration": false}, {"Distance": 0, "Acceleration": false}]}
+// Example 到最远端1 {"Mode": "Run", "Servos": [{"Angle": 875, "Time": 700}, {"Angle": 875, "Time": 700}], "Steppers": [{"Distance": -500, "Acceleration": false}, {"Distance": -700, "Acceleration": false}]}
+// 到最远端口2 {"Mode": "Run", "Servos": [{"Angle": 125, "Time": 700}, {"Angle": 125, "Time": 1000}], "Steppers": [{"Distance": -500, "Acceleration": false}, {"Distance": -500, "Acceleration": false}]}
+// 初始化 {"Mode": "Run", "Servos": [{"Angle": 500, "Time": 1000}, {"Angle": 500, "Time": 1000}], "Steppers": [{"Distance": 0, "Acceleration": false}, {"Distance": 0, "Acceleration": false}]}
 
 
 String buff = "";

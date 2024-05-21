@@ -3,6 +3,7 @@
 #include "SerialServo.h"
 #include <communication.hpp>
 #include "control.h"
+#include "Arduino.h"
 //#include <SoftwareSerial.h>
 
 #define DIR_PIN_LEFT 2 // 定义步进和方向引脚
@@ -95,16 +96,13 @@ void loop()
     else if (Command[0] == 1)
     {
       stepperLeft.moveTo(Command[5]);
-      stepperLeft.setSpeed(1000);
+      stepperLeft.setSpeed(800);
       stepperRight.moveTo(Command[7]);
-      stepperRight.setSpeed(1000);
+      stepperRight.setSpeed(800);
     }
   }
 
-  if(!switchState){
-    allowMove = true;
-    shouldServoMove1 = true;
-  }
+// NewFunction();
 
   if (allowMove)
   {
@@ -148,3 +146,11 @@ void loop()
   // 补充逻辑，如果舵机和步进电机都到了目标位置，将allowMove置为false
   // delay(500); // 简单的延时，防止信息打印过快
 }
+
+// void NewFunction()
+// {
+//   if(!switchState){
+//     allowMove = true;
+//     shouldServoMove1 = true;
+//   }
+// }
