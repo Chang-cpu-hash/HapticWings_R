@@ -113,16 +113,24 @@ void loop()
 
     if (shouldServoMove1)
     {
-      LobotSerialServoMove(Serial3, ID_ALL, Command[1], Command[2]);
+      LobotSerialServoMove(Serial3, 1, Command[1], Command[2]);
       Serial.println("Send suscessful");
       shouldServoMove1 = false;
     }
 
-    // if (shouldServoMove2)
-    // {
-    //   LobotSerialServoMove(Serial, ID_ALL, Command[3], Command[4]);
-    //   shouldServoMove2 = false;
-    // }
+    if (shouldServoMove2)
+    {
+      LobotSerialServoMove(Serial, 2, Command[3], Command[4]);
+      Serial.println("Send suscessful");
+      shouldServoMove2 = false;
+    }
+
+    if (stepperLeftIsArrived && stepperRightIsArrived)
+    {
+      allowMove = false;
+      stepperLeftIsArrived = false;
+      stepperRightIsArrived = false;
+    }
   }
   else
   {
