@@ -55,9 +55,9 @@ void setup()
   // stepperLeft.setMaxSpeed(1200);     // 设置最大速度
   // stepperLeft.setAcceleration(350);  // 设置加速度
 
-  // stepperRight.setCurrentPosition(0);
-  // stepperRight.setMaxSpeed(1200);
-  // stepperRight.setAcceleration(350);
+  stepperRight.setCurrentPosition(0);
+  stepperRight.setMaxSpeed(1200);
+  stepperRight.setAcceleration(350);
 
   stepperLeft.setCurrentPosition(0); // 设置当前位置为0
   stepperLeft.setMaxSpeed(2000);     // 设置最大速度
@@ -96,9 +96,9 @@ void loop()
     else if (Command[0] == 1)
     {
       stepperLeft.moveTo(Command[5]);
-      stepperLeft.setSpeed(800);
+      stepperLeft.setSpeed(700);
       stepperRight.moveTo(Command[7]);
-      stepperRight.setSpeed(800);
+      stepperRight.setSpeed(700);
     }
   }
 
@@ -125,12 +125,12 @@ void loop()
       shouldServoMove2 = false;
     }
 
-    if (stepperLeftIsArrived && stepperRightIsArrived)
-    {
-      allowMove = false;
-      stepperLeftIsArrived = false;
-      stepperRightIsArrived = false;
-    }
+    // if (stepperLeftIsArrived && stepperRightIsArrived)
+    // {
+    //   allowMove = false;
+    //   stepperLeftIsArrived = false;
+    //   stepperRightIsArrived = false;
+    // }
   }
   else
   {
