@@ -4,7 +4,7 @@
 #include <communication.hpp>
 #include "control.h"
 #include "Arduino.h"
-//#include <SoftwareSerial.h>
+// #include <SoftwareSerial.h>
 
 #define DIR_PIN_LEFT 2 // 定义步进和方向引脚
 #define STEP_PIN_LEFT 4
@@ -43,7 +43,7 @@ void setup()
 {
   pinMode(switchPin, INPUT_PULLUP); // 设置数字口为输入模式，启用内部上拉电阻
   Serial.begin(115200);             // 初始化串口通信
-  //mySerial.begin(19200);             // 初始化串口通信
+  // mySerial.begin(19200);             // 初始化串口通信
   Serial3.begin(115200);
   stepperLeft.stop();
   stepperRight.stop();
@@ -52,34 +52,35 @@ void setup()
   因此实际上会更高一些*/
 
   stepperLeft.setCurrentPosition(0); // 设置当前位置为0
-  // stepperLeft.setMaxSpeed(1200);     // 设置最大速度
-  // stepperLeft.setAcceleration(350);  // 设置加速度
+  stepperLeft.setMaxSpeed(2000);     // 设置最大速度
+  stepperLeft.setAcceleration(350);
 
   stepperRight.setCurrentPosition(0);
   stepperRight.setMaxSpeed(1200);
   stepperRight.setAcceleration(350);
 
-  stepperLeft.setCurrentPosition(0); // 设置当前位置为0
-  stepperLeft.setMaxSpeed(2000);     // 设置最大速度
   i = 0;
 }
 
 void loop()
 {
-   switchState = digitalRead(switchPin); // 读取开关状态
+
+  // int servo1Postion = LobotSerialServoReadPosition(Serial3, 1);
+  // int servo2Postion = LobotSerialServoReadPosition(Serial3, 2);
+
+  switchState = digitalRead(switchPin); // 读取开关状态
 
   long *Command = SerialReceive();
 
   // 用于测试communication.hpp中的SerialReceive()函数是否正常工作
   if (Command[0] == 0)
   {
-    //printCommandInfo("TestMode: Init", Command);
+    // printCommandInfo("TestMode: Init", Command);
   }
   else if (Command[0] == 1)
   {
-    //printCommandInfo("RunMode: ", Command);
+    // printCommandInfo("RunMode: ", Command);
   }
-  
 
   if (Command[0] == 0 || Command[0] == 1)
   {
@@ -89,9 +90,9 @@ void loop()
     if (Command[0] == 0)
     {
       stepperLeft.moveTo(0);
-      stepperLeft.setSpeed(1000);
+      stepperLeft.setSpeed(700);
       stepperRight.moveTo(0);
-      stepperRight.setSpeed(1000);
+      stepperRight.setSpeed(700);
     }
     else if (Command[0] == 1)
     {
@@ -102,13 +103,12 @@ void loop()
     }
   }
 
-// NewFunction();
-
   if (allowMove)
   {
-    if (stepperLeft.runSpeedToPosition())
+    if (!stepperLeft.runSpeedToPosition())
       stepperLeftIsArrived = true;
-    if (stepperRight.runSpeedToPosition())
+
+    if (!stepperRight.runSpeedToPosition())
       stepperRightIsArrived = true;
 
     if (shouldServoMove1)
@@ -125,12 +125,12 @@ void loop()
       shouldServoMove2 = false;
     }
 
-    // if (stepperLeftIsArrived && stepperRightIsArrived)
-    // {
-    //   allowMove = false;
-    //   stepperLeftIsArrived = false;
-    //   stepperRightIsArrived = false;
-    // }
+    if (stepperLeftIsArrived && stepperRightIsArrived && allowMove)
+    {
+      allowMove = false;
+      stepperLeftIsArrived = false;
+      stepperRightIsArrived = false;
+    }
   }
   else
   {
@@ -150,9 +150,9 @@ void loop()
   //   shouldServoMove = true;
   // }
 
-  //Command[0] = 99;
-  // 补充逻辑，如果舵机和步进电机都到了目标位置，将allowMove置为false
-  // delay(500); // 简单的延时，防止信息打印过快
+  // Command[0] = 99;
+  //  补充逻辑，如果舵机和步进电机都到了目标位置，将allowMove置为false
+  //  delay(500); // 简单的延时，防止信息打印过快
 }
 
 // void NewFunction()
