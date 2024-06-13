@@ -105,12 +105,6 @@ void loop()
 
   if (allowMove)
   {
-    if (!stepperLeft.runSpeedToPosition())
-      stepperLeftIsArrived = true;
-
-    if (!stepperRight.runSpeedToPosition())
-      stepperRightIsArrived = true;
-
     if (shouldServoMove1)
     {
       LobotSerialServoMove(Serial3, 1, Command[1], Command[2]);
@@ -125,12 +119,18 @@ void loop()
       shouldServoMove2 = false;
     }
 
-    if (stepperLeftIsArrived && stepperRightIsArrived && allowMove)
-    {
-      allowMove = false;
-      stepperLeftIsArrived = false;
-      stepperRightIsArrived = false;
-    }
+    if (!stepperLeft.runSpeedToPosition())
+      stepperLeftIsArrived = true;
+
+    if (!stepperRight.runSpeedToPosition())
+      stepperRightIsArrived = true;
+
+    // if (stepperLeftIsArrived && stepperRightIsArrived && allowMove)
+    // {
+    //   allowMove = false;
+    //   stepperLeftIsArrived = false;
+    //   stepperRightIsArrived = false;
+    // }
   }
   else
   {
